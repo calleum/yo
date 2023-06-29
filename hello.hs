@@ -11,7 +11,7 @@ myhtml =
     ( append_
       (h1_ "Page Head1")
       ( append_
-        (p_ "Hey cletus!")
+        (p_ "<p>Hey cletus!</p>")
         (p_ "Hey zeus!")
       )
     )

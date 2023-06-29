@@ -9,34 +9,36 @@ module Html
   , render
   )
   where
+
 newtype Html = Html String
 newtype Element = Element String
 type Title = String
+
 html_ :: Title -> Element -> Html
 html_ title content = Html
-    ( makeTag "html"
-      ( makeTag "head" (makeTag "title" title)
-      <> makeTag "body" (getElemString content)
+    ( el "html"
+      ( el "head" (el "title" (escape title))
+      <> el "body" (getElemString content)
       )
     )
 
 body_ :: String -> Element
-body_ = Element . makeTag "body"
+body_ = Element . el "body"
 
 head_ :: String -> Element
-head_ = Element . makeTag "head"
-
-title_ :: String -> Element
-title_ = Element . makeTag "title"
+head_ = Element . el "head"
 
 p_ :: String -> Element
-p_ = Element . makeTag "p"
+p_ = Element . el "p" . escape
 
 h1_ :: String ->  Element
-h1_ = Element . makeTag "h1"
+h1_ = Element . el "h1" . escape
 
-makeTag :: String -> String -> String
-makeTag tag content = "<" <> tag  <> ">" <> content <> "</" <> tag <> ">"
+append_ :: Element -> Element -> Element
+append_ a b = Element (getElemString a <> getElemString b)
+
+el :: String -> String -> String
+el tag content = "<" <> tag  <> ">" <> content <> "</" <> tag <> ">"
 
 render :: Html -> String
 render html = 
@@ -48,5 +50,16 @@ getElemString el =
     case el of
         Element str -> str
 
-append_ :: Element -> Element -> Element
-append_ a b = Element (getElemString a <> getElemString b)
+escape :: String -> String
+escape = 
+    let
+        escapeChar c = 
+            case c of
+                '<' -> "&lt;"
+                '>' -> "&gt;"
+                '&' -> "&amp;"
+                '"' -> "&quot;"
+                '\'' -> "&#39;"
+                _ -> [c]
+    in
+        concat . map escapeChar
