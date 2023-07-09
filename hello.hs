@@ -8,10 +8,10 @@ myhtml :: Html
 myhtml =
   html_
     "My page!"
-    ( append_
-      (h1_ "Page Head1")
-      ( append_
+      ((h1_ "Page Head1")
+      <>
+      (
         (p_ "<p>Hey cletus!</p>")
+        <>
         (p_ "Hey zeus!")
-      )
-    )
+    ))

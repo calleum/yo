@@ -7,7 +7,6 @@ module Html
   , ol_
   , h1_
   , html_
-  , append_
   , code_
   , render
   )

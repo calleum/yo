@@ -33,8 +33,8 @@ ol_ = Element . el "ol" . concat . map (el "li" . getElemString)
 ul_ :: [Element] -> Element
 ul_ = Element . el "ul" . concat . map (el "li" . getElemString)
 
-append_ :: Element -> Element -> Element
-append_ a b = Element (getElemString a <> getElemString b)
+instance Semigroup Element where
+    (<>) a b = Element (getElemString a <> getElemString b)
 
 el :: String -> String -> String
 el tag content = "<" <> tag  <> ">" <> content <> "</" <> tag <> ">"
